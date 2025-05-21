@@ -7,8 +7,9 @@ public class Controller {
 
     /**
      * Kontrolleri konstruktor
+     *
      * @param model App failis loodud mudel
-     * @param view App failisi loodud view
+     * @param view  App failisi loodud view
      */
     public Controller(Model model, View view) {
         this.model = model;
@@ -26,18 +27,25 @@ public class Controller {
             switch (choice) {
                 case 1: // Uus mäng
                     model.initGame(); // Loo uus mäng
-                    view.showMessage(String.valueOf(model.getPc_number())); // TEST, mida arvuti mõtles
+                    // view.showMessage(String.valueOf(model.getPc_number())); // TEST, mida arvuti mõtles
                     Stopwatch stopwatch = new Stopwatch(); // Loome stopperi
                     stopwatch.start(); // Käivitame stopperi
                     while (!model.isGame_over()) { // Kui mäng pole läbi
                         int guess = view.askGuess(); // Küsi kasutajalt numbrit
-                        view.showMessage(model.checkGuess(guess)); // Kontrolli ja väljasta tulemus
+                        if (guess == 1000) {
+                            view.showMessage("Õige vastus oli: " + model.getPc_number());
+                        }
+                        view.showMessage(model.checkGuess(guess));
                     }
                     stopwatch.stop(); // Peata stopper
-                    // Näita aega järgnevalt: "Mängu aeg 00:00:00 (0000)"
-                    view.showMessage("Mängu aeg: " + stopwatch.getElapsedTime() + " ("+ stopwatch.getElapsedMillis() +")");
-                    String name = view.askName(); // Küsi nime
-                    model.saveScore(name);
+                    // Kuvame vormindatud aja
+                    view.showMessage("Mängu aeg: " + stopwatch.getElapsedTimeFormatted() + "(" + stopwatch.getElapsedMillis() + " ms)");
+                    if (model.getSteps() == 1000) {
+                        view.showMessage("Tagauks on avatud - Tulemust ei salvestata.");
+                    } else {
+                        String name = view.askName(); // Küsi nime juhul kui pole tagauks
+                        model.saveScore(name, stopwatch.getElapsedMillis());
+                    }
                     break;
                 case 2: // Edetabel
                     // Näita edetabelit

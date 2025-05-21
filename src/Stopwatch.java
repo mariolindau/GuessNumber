@@ -17,41 +17,47 @@ public class Stopwatch {
     }
 
     /**
-     * Peatab stopperi
+     * Peatab stopperi ja summeerib aja
      */
     public void stop() {
         if (running) {
-            elapsedTime = System.currentTimeMillis() - startTime;
+            elapsedTime += System.currentTimeMillis() - startTime;
             running = false;
         }
     }
 
     /**
-     * kajastab vormindatud mänguaja
-     * @return vormindatud aeg
+     * Tagastab mänguaja millisekundites
+     * @return mängu aeg millisekundites
      */
-    public String getElapsedTime() {
-        long totalMillis = elapsedTime;
-        if (running) {
-            totalMillis = System.currentTimeMillis() - startTime;
-        }
-        long seconds = totalMillis / 1000;
-        long hours = seconds / 3600;
-        long minutes = (seconds % 3600) / 60;
-        long secs = seconds % 60;
-        return String.format("%02d:%02d:%02d", hours, minutes, secs);
+    public long getElapsedMillis() {
+      if (running) {
+          return elapsedTime + (System.currentTimeMillis() - startTime);
+      } else {
+          return elapsedTime;
+      }
     }
 
     /**
-     * Tagastab mänguaja millisekundites
-     * @return mängu aeg
+     * kajastab vormindatud mänguaega kujul hh:mm:ss
+     * @return vormindatud aeg stringis
      */
-    public long getElapsedMillis() {
-        long totalMillis = elapsedTime;
-        if (running) {
-            totalMillis = System.currentTimeMillis() - startTime;
-        }
-        return totalMillis;
+    public String getElapsedTimeFormatted() {
+        long totalMillis = getElapsedMillis();
+        long totalSeconds = totalMillis / 1000;
+        long hours = totalSeconds / 3600;
+        long minutes = (totalSeconds % 3600) / 60;
+        long seconds = totalSeconds % 60;
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
+
+    /**
+     * Lähtestab stopperi (nullib)
+     */
+    public void reset() {
+        startTime = 0;
+        elapsedTime = 0;
+        running = false;
     }
 }
 

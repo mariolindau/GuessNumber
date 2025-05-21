@@ -22,7 +22,14 @@ public class View {
      * @return kasutaja sisestus
      */
     public int getMenuChoice() {
-        return Integer.parseInt(scanner.nextLine());
+        while (true) {
+            String input = scanner.nextLine();
+            try {
+                return Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Vigane sisestus! Palun sisesta arv 1 kuni 3: ");
+            }
+        }
     }
 
     /**
@@ -38,8 +45,18 @@ public class View {
      * @return Kasutaja sisestatud number
      */
     public int askGuess() {
-        System.out.print("Sisesta nimber: ");
-        return Integer.parseInt(scanner.nextLine());
+        int number;
+        while (true) {
+            System.out.print("Sisesta number: ");
+            String input = scanner.nextLine();
+            try {
+                number = Integer.parseInt(input);
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Viga! Palun sisesta reaalne number.");
+            }
+        }
+        return number;
     }
 
     /**
@@ -47,12 +64,13 @@ public class View {
      * @return sisestatud nimi
      */
     public String askName() {
-        System.out.print("Sissta nime: ");
+        System.out.print("Sissta nimi: ");
         return scanner.nextLine();
     }
 
     /**
-     *
+     * Näitab konsooli edetabelit
+     * @param scores Faili sisu
      */
     public void showScoreBoard(List<Content> scores) {
         System.out.println("EDETABEL");
